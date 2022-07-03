@@ -94,12 +94,13 @@ public class TaskManager {
         subtaskMap.put(subtask.getIdTask(), subtask);  // добавили в коллекцию подзадачу
         Epic epic = epicMap.get(subtask.getEpicId());  // достаем задачу, в которой лежит подзадача
         epic.addSubtask(subtask); // добавляем в задачу c этим id нашу подзадач
-        epic.setTaskStatus(calculateStatus(epic));
+        epic.setTaskStatus(calculateStatus(epic)); // обновили статус эпика
     }
 
     public void update(Subtask subtask) {
         Epic epic = epicMap.get(subtask.getEpicId()); // достаем задачу, в которой лежит подзадача
         epic.addSubtask(subtask); // обновляем подзадачу
+        epic.setTaskStatus(calculateStatus(epic)); // обновили статус эпика
     }
 
     public void removeSubtaskById(int id) {
