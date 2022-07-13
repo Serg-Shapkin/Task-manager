@@ -2,12 +2,12 @@ import domain.Epic;
 import domain.Subtask;
 import domain.Task;
 import domain.TaskStatus;
-import manager.TaskManager;
+import manager.InMemoryTaskManager;
 
 public class Main {
 
     public static void main(String[] args) {
-        TaskManager taskManager = new TaskManager();
+        InMemoryTaskManager taskManager = new InMemoryTaskManager();
         Task task = new Task("Напоминание 1", "Сдать показания счетчиков", 3, TaskStatus.NEW);
 
         Epic epic = new Epic("Переезд", "Переезд планируется завтра", 1);

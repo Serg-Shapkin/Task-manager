@@ -29,9 +29,7 @@ public class Task {
         this.descriptionTask = descriptionTask;
     }
 
-    public int getIdTask() {
-        return idTask;
-    }
+    public int getIdTask() { return idTask; }
 
     public void setIdTask(int idTask) {
         this.idTask = idTask;
