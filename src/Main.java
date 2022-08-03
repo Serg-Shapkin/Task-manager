@@ -2,42 +2,46 @@ import domain.Epic;
 import domain.Subtask;
 import domain.Task;
 import domain.TaskStatus;
+import history.HistoryManager;
 import manager.InMemoryTaskManager;
+import manager.Managers;
+import manager.TaskManager;
 
 public class Main {
 
     public static void main(String[] args) {
-        InMemoryTaskManager taskManager = new InMemoryTaskManager();
-        Task task = new Task("Напоминание 1", "Сдать показания счетчиков", 3, TaskStatus.NEW);
+        TaskManager taskManager = Managers.getDefaultTaskManager();
+        HistoryManager historyManager = Managers.getDefaultHistoryManager();
 
-        Epic epic = new Epic("Переезд", "Переезд планируется завтра", 1);
-        Epic epic2 = new Epic("Переезд", "Переезд планируется завтра", 2);
-        Epic epic3 = new Epic("Переезд", "Переезд планируется завтра", 3);
+        // создать две задачи
+        Task task1 = new Task("Напоминание 1", "Сдать показания счетчиков", 1, TaskStatus.NEW);
+        Task task2 = new Task("Напоминание 2", "Оплатить квитанции КУ", 2, TaskStatus.IN_PROGRESS);
+        taskManager.addTask(task1);
+        taskManager.addTask(task2);
 
-        Subtask subtask11 = new Subtask("Подзадача 1", "Собрать коробки",
-                1,TaskStatus.NEW, 1);
-        Subtask subtask12 = new Subtask("Подзадача 2", "Позвать друзей",
-                2,TaskStatus.NEW, 1);
-        Subtask subtask13 = new Subtask("Подзадача 3", "Загрузить все в машину",
-                3,TaskStatus.NEW, 1);
+        System.out.println(taskManager.getTaskById(1));
+        System.out.println(taskManager.getTaskById(2));
 
-        Subtask subtask21 = new Subtask("Подзадача 1", "Собрать коробки",
-                1,TaskStatus.DONE, 2);
-        Subtask subtask22 = new Subtask("Подзадача 2", "Позвать друзей",
-                2,TaskStatus.DONE, 2);
-        Subtask subtask23 = new Subtask("Подзадача 3", "Загрузить все в машину",
-                3,TaskStatus.DONE, 2);
 
-        taskManager.addEpic(epic);
+        // создать эпик с тремя подзадачами
+        Epic epic1 = new Epic("Эпик 1", "Переезд планируется завтра", 6);
+        Subtask subtask1 = new Subtask("Подзадача 1", "Собрать коробки",
+                3,TaskStatus.NEW, 6);
+        Subtask subtask2 = new Subtask("Подзадача 2", "Позвать друзей",
+                4,TaskStatus.NEW, 6);
+        Subtask subtask3 = new Subtask("Подзадача 3", "Загрузить все в машину",
+                5,TaskStatus.NEW, 6);
+
+
+        // создать эпик без подзадач
+        Epic epic2 = new Epic("Эпик 2", "Записать цели по обучению", 7);
+
+        taskManager.addEpic(epic1);
         taskManager.addEpic(epic2);
-        taskManager.addEpic(epic3);
 
-        taskManager.addSubtask(subtask11);
-        taskManager.addSubtask(subtask12);
-        taskManager.addSubtask(subtask13);
-
-        taskManager.addSubtask(subtask21);
-        taskManager.addSubtask(subtask22);
+        taskManager.addSubtask(subtask1);
+        taskManager.addSubtask(subtask2);
+        taskManager.addSubtask(subtask3);
 
     }
 }

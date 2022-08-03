@@ -9,4 +9,6 @@ public interface HistoryManager {
     Collection<Task> getHistory();
 
     void addTask(Task task);
+
+    void remove(int id);
 }
