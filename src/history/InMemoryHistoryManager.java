@@ -5,62 +5,62 @@ import domain.Task;
 import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private final CustomLinkedList historyList = new CustomLinkedList();
+    private final CustomLinkedList<Task> historyList = new CustomLinkedList<>();
 
-    private static class CustomLinkedList {
+
+    private static class CustomLinkedList<E extends Task> {
         private final Map<Integer, Node> nodeHistory = new HashMap<>(); // key - id задачи, value - узел связного списка
         private Node first; // ссылка на первый элемент
         private Node last;  // ссылка на последний элемент
         private int size = 0;
 
-        public void linkLast(Task task) { // добавляем задачу в конец списка
-            final Node newNode = new Node(last, task, null);
+        public void linkLast(E element) { // добавляем задачу в конец списка
+            int id = element.getIdTask();
+            if (nodeHistory.get(id) != null) {
+                removeNode(nodeHistory.get(id));
+            }
+
+            final Node<E> newNode = new Node(last, element, null);
             last = newNode;
+
             if (last == null) {
                 first = newNode;
             } else {
                 last.next = newNode;
             }
+
+            nodeHistory.put(id, newNode);
             size++;
         }
 
-        public Collection<Task> getTasks() { // получаем задачи в обычный ArrayList
-            final List<Task> allTasks = new ArrayList<>();
-            Node node = first;
-            while (node != null) {
-                allTasks.add(node.task);
-                node = node.next;
+        public Collection<E> getTasks() { // получаем задачи в обычный ArrayList
+            final List<E> allTasks = new ArrayList<>();
+            for (Node<E> i = first; i != null; i = i.next) {
+                allTasks.add(i.task);
             }
             return allTasks;
         }
 
-        public void removeNode(int id) { // принимает id ноды
-            Node node = getNode(id); // ветка, которую будем удалять
-            Node nodeNext = node.next; // следующий индекс
-            Node nodePrevious = node.previous; // предыдущий индекс
+        public void removeNode(Node<E> id) { // принимает id ноды
+            final E element = id.task;
+            final Node<E> next = id.next;
+            final Node<E> previous = id.previous;
 
-            if (nodeNext != null) {
-                nodeNext.previous = nodePrevious; // переписали ссылки
+            if (previous == null) {
+                first = next;
             } else {
-                last = nodePrevious;
+                previous.next = next;
+                id.previous = null;
             }
 
-            if (nodePrevious != null) {
-                nodePrevious.next = nodeNext;
+            if (next == null) {
+                last = previous;
             } else {
-                first = nodeNext;
+                next.previous = previous;
+                id.next = null;
             }
+            id.task = null;
             size--;
-        }
-
-
-        // если обращаемся к индексу ноль, то node хранит индекс первого элемента и далее мы его вернем
-        private Node getNode(int index) { // приватный метод, кот. возвращает Node по индексу
-            Node node = first; // node = первому элементу
-            for (int i = 0; i < index; i++) {
-                node = node.next;
-            }
-            return node;
         }
     }
 
@@ -76,11 +76,9 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void remove(int id) {
-        historyList.removeNode(id);
+        historyList.removeNode(historyList.nodeHistory.get(id));
     }
 }
-
-
 
 
     // private final Deque<Task> tasksHistory = new LinkedList<>(); //двунаправленная очередь

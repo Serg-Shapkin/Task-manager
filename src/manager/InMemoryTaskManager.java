@@ -5,6 +5,7 @@ import domain.Subtask;
 import domain.Task;
 import domain.TaskStatus;
 import history.HistoryManager;
+import history.InMemoryHistoryManager;
 
 import java.util.*;
 
@@ -14,7 +15,7 @@ public class InMemoryTaskManager implements TaskManager {
     private Map<Integer, Epic> epicMap = new HashMap<>(); // большая задача
     private Map<Integer, Subtask> subtaskMap = new HashMap<>(); // подзадача в большой задаче
 
-    protected HistoryManager historyManager;
+    private HistoryManager historyManager = Managers.getDefaultHistoryManager();
 
     //Task
     @Override
@@ -52,11 +53,9 @@ public class InMemoryTaskManager implements TaskManager {
     public void removeTaskById(int id) { // 2.6 Удалить по id
         if (taskMap.containsKey(id)) {
             taskMap.remove(id);
-
             historyManager.remove(id); // удалить задачу из истории просмотров
-
         } else {
-            System.out.println("Такого id задачи нет.");
+            System.out.println("Такого id нет.");
         }
     }
 
@@ -174,15 +173,30 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     private TaskStatus calculateStatus(Epic epic) {
+        TaskStatus taskStatus = null;
+
+        for (Subtask subtask : epic.getSubtaskList()) {
+            if (subtask == null || subtask.getTaskStatus() == TaskStatus.NEW) {
+                taskStatus = TaskStatus.NEW;
+            } else if (subtask.getTaskStatus() == TaskStatus.DONE) {
+                taskStatus = TaskStatus.DONE;
+            } else {
+                taskStatus = TaskStatus.IN_PROGRESS;
+            }
+        }
+        return taskStatus;
+    }
+
+    /*private TaskStatus calculateStatus(Epic epic) {
         boolean isNew = false;
         boolean inProgress = false;
         boolean isDone = false;
 
-        for (Subtask subtask1 : epic.getSubtaskList()) {
+        for (Subtask subtask : epic.getSubtaskList()) {
             // если у эпика нет подзадач или статус NEW
-            if(subtask1 == null || subtask1.getTaskStatus() == TaskStatus.NEW) {
+            if(subtask == null || subtask.getTaskStatus() == TaskStatus.NEW) {
                 isNew = true;
-            } else if (subtask1.getTaskStatus() == TaskStatus.DONE) {
+            } else if (subtask.getTaskStatus() == TaskStatus.DONE) {
                 isDone = true;
             } else {
                 inProgress = true;
@@ -198,7 +212,7 @@ public class InMemoryTaskManager implements TaskManager {
         } else {
             return TaskStatus.IN_PROGRESS;
         }
-    }
+    }*/
 
     @Override
     public Collection<Task> getHistory() {

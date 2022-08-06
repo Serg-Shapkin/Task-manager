@@ -6,11 +6,10 @@ public class Task {
     private int idTask; // id задачи по которому ее можно найти
     private TaskStatus taskStatus; //статус задачи
 
-    public Task(String taskName, String descriptionTask, int idTask, TaskStatus taskStatus) {
+    public Task(String taskName, String descriptionTask, TaskStatus taskStatus) {
         this.taskName = taskName;
         this.descriptionTask = descriptionTask;
-        this.idTask = idTask;
-        this.taskStatus = taskStatus;
+        this.taskStatus = null;
     }
 
     public String getTaskName() {
@@ -37,5 +36,15 @@ public class Task {
 
     public TaskStatus getTaskStatus() {
         return taskStatus;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "taskName='" + taskName + '\'' +
+                ", descriptionTask='" + descriptionTask + '\'' +
+                ", idTask=" + idTask +
+                ", taskStatus=" + taskStatus +
+                '}';
     }
 }

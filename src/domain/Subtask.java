@@ -3,8 +3,8 @@ package domain;
 public class Subtask extends Task {
     protected int epicId; // id нашего Epic
 
-    public Subtask(String taskName, String descriptionTask, int idSubtask, TaskStatus taskStatus, int epicId) {
-        super(taskName, descriptionTask, idSubtask, taskStatus);
+    public Subtask(String taskName, String descriptionTask, TaskStatus taskStatus, int epicId) {
+        super(taskName, descriptionTask, taskStatus);
         this.epicId = epicId;
     }
 

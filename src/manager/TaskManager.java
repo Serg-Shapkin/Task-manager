@@ -42,7 +42,7 @@ public interface TaskManager {
 
     Subtask getSubtaskById(int id); // получить сабтаску по id
 
-    void addSubtask(Subtask subtask); // добавить сабтаску. Если нет эпик, то добавить нельзя.
+    void addSubtask(Subtask subtask); // добавить сабтаску. Если нет эпика, то добавить нельзя.
 
     void updateSubtask(Subtask subtask); // обновить сабтаску
 
