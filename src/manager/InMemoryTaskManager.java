@@ -41,6 +41,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void addTask(Task task) { // 2.4 новая задача, сохранить данные
         task.setIdTask(nexId++);
+        task.setTaskStatus(TaskStatus.NEW); // у всех новых задач будет статус NEW
         taskMap.put(task.getIdTask(), task);
     }
 
@@ -172,7 +173,7 @@ public class InMemoryTaskManager implements TaskManager {
         return subtaskOfTheEpic;
     }
 
-    private TaskStatus calculateStatus(Epic epic) {
+    /*private TaskStatus calculateStatus(Epic epic) {
         TaskStatus taskStatus = null;
 
         for (Subtask subtask : epic.getSubtaskList()) {
@@ -185,9 +186,9 @@ public class InMemoryTaskManager implements TaskManager {
             }
         }
         return taskStatus;
-    }
+    }*/
 
-    /*private TaskStatus calculateStatus(Epic epic) {
+    private TaskStatus calculateStatus(Epic epic) {
         boolean isNew = false;
         boolean inProgress = false;
         boolean isDone = false;
@@ -212,7 +213,7 @@ public class InMemoryTaskManager implements TaskManager {
         } else {
             return TaskStatus.IN_PROGRESS;
         }
-    }*/
+    }
 
     @Override
     public Collection<Task> getHistory() {

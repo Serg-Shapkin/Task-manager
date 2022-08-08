@@ -2,12 +2,12 @@ package history;
 
 import domain.Task;
 
-public class Node<E> {
-    public Node<E> previous;
-    public E task;
-    public Node<E> next;
+public class Node {
+    public Node previous;
+    public Task task;
+    public Node next;
 
-    public Node(Node<E> previous, E task, Node<E> next) {
+    public Node(Node previous, Task task, Node next) {
         this.previous = previous;
         this.task = task;
         this.next = next;
