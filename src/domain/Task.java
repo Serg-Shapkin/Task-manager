@@ -6,10 +6,10 @@ public class Task {
     private int idTask; // id задачи по которому ее можно найти
     private TaskStatus taskStatus; //статус задачи
 
-    public Task(String taskName, String descriptionTask) {
+    public Task(String taskName, String descriptionTask, TaskStatus taskStatus) {
         this.taskName = taskName;
         this.descriptionTask = descriptionTask;
-        //this.taskStatus = taskStatus;
+        this.taskStatus = taskStatus;
     }
 
     public String getTaskName() {

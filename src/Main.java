@@ -14,8 +14,8 @@ public class Main {
         HistoryManager historyManager = Managers.getDefaultHistoryManager();
 
         // создать две задачи
-        Task task1 = new Task("Напоминание 1", "Сдать показания счетчиков");
-        Task task2 = new Task("Напоминание 2", "Оплатить квитанции КУ");
+        Task task1 = new Task("Напоминание 1", "Сдать показания счетчиков", TaskStatus.NEW);
+        Task task2 = new Task("Напоминание 2", "Оплатить квитанции КУ", TaskStatus.IN_PROGRESS);
         taskManager.addTask(task1);
         taskManager.addTask(task2);
 
@@ -33,7 +33,6 @@ public class Main {
 
         taskManager.removeTaskById(2);
         System.out.println("История: " + historyManager.getHistory());
-
 
 
         System.out.println("- - - - - - - - - - - - - - -");
