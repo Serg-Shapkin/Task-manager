@@ -23,25 +23,6 @@ public class InMemoryHistoryManager implements HistoryManager {
             last = node;
         }
 
-        /*private void linkLast(E element) { // добавляем задачу в конец списка
-            int id = element.getIdTask();
-            if (nodeHistory.get(id) != null) {
-                removeNode(nodeHistory.get(id));
-            }
-            final Node<E> l = last;
-            final Node<E> newNode = new Node(l, element, null);
-            last = newNode;
-
-            if (l == null) {
-                first = newNode;
-            } else {
-                l.next = newNode;
-            }
-
-            nodeHistory.put(id, newNode);
-            size++;
-        }*/
-
         public Collection<Task> getTasks() { // получаем задачи в обычный ArrayList
             final List<Task> allTasks = new ArrayList<>();
             Node node = first;
@@ -51,14 +32,6 @@ public class InMemoryHistoryManager implements HistoryManager {
             }
             return allTasks;
         }
-
-        /*private Collection<E> getTasks() { // получаем задачи в обычный ArrayList
-            final List<E> allTasks = new ArrayList<>();
-            for (Node<E> i = first; i != null; i = i.next) {
-                allTasks.add(i.task);
-            }
-            return allTasks;
-        }*/
 
         public void removeNode(int id) { // принимает id ноды
             final Node node = nodeHistory.remove(id);
@@ -82,27 +55,6 @@ public class InMemoryHistoryManager implements HistoryManager {
             }
             System.out.println(nodeHistory);
         }
-        /*private void removeNode(Node<E> id) { // принимает id ноды
-            final E element = id.task;
-            final Node<E> next = id.next;
-            final Node<E> previous = id.previous;
-
-            if (previous == null) {
-                first = next;
-            } else {
-                previous.next = next;
-                id.previous = null;
-            }
-
-            if (next == null) {
-                last = previous;
-            } else {
-                next.previous = previous;
-                id.next = null;
-            }
-            id.task = null;
-            size--;
-        }*/
     }
 
     @Override
@@ -122,9 +74,9 @@ public class InMemoryHistoryManager implements HistoryManager {
 }
 
 
-    // private final Deque<Task> tasksHistory = new LinkedList<>(); //двунаправленная очередь
 
 /*
+    private final Deque<Task> tasksHistory = new LinkedList<>(); //двунаправленная очередь
     @Override
     public void addTask(Task task) { // добавить таску в историю
         tasksHistory.addLast(task);  // добавляем в историю в конец
@@ -132,6 +84,5 @@ public class InMemoryHistoryManager implements HistoryManager {
             tasksHistory.removeFirst(); // то удаляем самый старый элемент
         }
     }
-     */
-
+*/
 

@@ -5,7 +5,6 @@ import domain.Subtask;
 import domain.Task;
 import domain.TaskStatus;
 import history.HistoryManager;
-import history.InMemoryHistoryManager;
 
 import java.util.*;
 
@@ -15,7 +14,11 @@ public class InMemoryTaskManager implements TaskManager {
     private Map<Integer, Epic> epicMap = new HashMap<>(); // большая задача
     private Map<Integer, Subtask> subtaskMap = new HashMap<>(); // подзадача в большой задаче
 
-    private HistoryManager historyManager = Managers.getDefaultHistoryManager();
+    private HistoryManager historyManager;
+
+    public InMemoryTaskManager(HistoryManager defaultHistoryManager) {
+        this.historyManager = defaultHistoryManager;
+    }
 
     //Task
     @Override
@@ -41,7 +44,6 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void addTask(Task task) { // 2.4 новая задача, сохранить данные
         task.setIdTask(nexId++);
-        //task.setTaskStatus(TaskStatus.NEW); // у всех новых задач будет статус NEW
         taskMap.put(task.getIdTask(), task);
     }
 

@@ -3,7 +3,6 @@ import domain.Epic;
 import domain.Subtask;
 import domain.Task;
 import domain.TaskStatus;
-import history.HistoryManager;
 import manager.Managers;
 import manager.TaskManager;
 
@@ -11,7 +10,6 @@ public class Main {
 
     public static void main(String[] args) {
         TaskManager taskManager = Managers.getDefaultTaskManager();
-        HistoryManager historyManager = Managers.getDefaultHistoryManager();
 
         // создать две задачи
         Task task1 = new Task("Напоминание 1", "Сдать показания счетчиков", TaskStatus.NEW);
@@ -22,17 +20,21 @@ public class Main {
         System.out.println(taskManager.getAllTasks());
         System.out.println("- - - - - - - - - - - - - - -");
 
-        System.out.println(taskManager.getTaskById(1));
-        System.out.println("История: " + historyManager.getHistory());
-        System.out.println(taskManager.getTaskById(2));
-        System.out.println("История: " + historyManager.getHistory());
-        System.out.println(taskManager.getTaskById(1));
-        System.out.println("История: " + historyManager.getHistory());
-        System.out.println(taskManager.getTaskById(2));
-        System.out.println("История: " + historyManager.getHistory());
+        System.out.println("Запросили задачу №1 по id");
+        taskManager.getTaskById(1);
+        System.out.println("Запросили задачу №2 по id");
+        taskManager.getTaskById(2);
+        System.out.println("История №1: " + taskManager.getHistory());
 
+        System.out.println("Еще раз запросили задачу №1 по id");
+        taskManager.getTaskById(1);
+        System.out.println("Еще раз запросили задачу №2 по id");
+        taskManager.getTaskById(2);
+        System.out.println("История №2: " + taskManager.getHistory());
+
+        System.out.println("Удаляем задачу №2 по id");
         taskManager.removeTaskById(2);
-        System.out.println("История: " + historyManager.getHistory());
+        System.out.println("История после удаления: " + taskManager.getHistory());
 
 
         System.out.println("- - - - - - - - - - - - - - -");
@@ -64,8 +66,7 @@ public class Main {
         System.out.println(taskManager.getSubtaskById(7));
         System.out.println(taskManager.getSubtaskById(8));
 
-        System.out.println("История: " + historyManager.getHistory() + "\n");
-
+        System.out.println("История: " + taskManager.getHistory() + "\n");
 
         System.out.println("Эпик: \"Цели по обучению\"");
         Subtask subtask21 = new Subtask("Подзадача 2-1", "Взять лист бумаги и ручку",
@@ -88,7 +89,7 @@ public class Main {
         taskManager.removeSubtaskById(9); // удалили сабтаску из второго эпика
         System.out.println("\n" + taskManager.subtaskOfTheEpic(epic2));
 
-        System.out.println("История: " + historyManager.getHistory() + "\n");
+        System.out.println("История: " + taskManager.getHistory() + "\n");
 
 
         System.out.println("Эпик: \"ТЗ-5\"");
@@ -108,13 +109,13 @@ public class Main {
         System.out.println(taskManager.getSubtaskById(13));
         System.out.println(taskManager.getSubtaskById(14));
 
-        System.out.println("История: " + historyManager.getHistory() + "\n");
+        System.out.println("История: " + taskManager.getHistory() + "\n");
 
         System.out.println("Удаляем эпик: \"Большой переезд\"");
         taskManager.removeEpicById(3);
 
         System.out.println("Все Эпики:");
         System.out.println(taskManager.getAllEpics() + "\n"); // Получить все эпики
-        System.out.println("История: " + historyManager.getHistory() + "\n");
+        System.out.println("История: " + taskManager.getHistory() + "\n");
     }
 }

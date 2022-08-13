@@ -9,7 +9,7 @@ import history.InMemoryHistoryManager;
 public final class Managers {    // понял что он должен быть final
 
     public static TaskManager getDefaultTaskManager() {    // ... и методы public static
-        return new InMemoryTaskManager();
+        return new InMemoryTaskManager(getDefaultHistoryManager());
     }
 
     public static HistoryManager getDefaultHistoryManager() {
