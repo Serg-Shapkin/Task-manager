@@ -86,9 +86,11 @@ public class Main {
         System.out.println(taskManager.getSubtaskById(10));
         System.out.println(taskManager.getSubtaskById(11));
 
+        System.out.println("История: " + taskManager.getHistory() + "\n");
+
         taskManager.removeSubtaskById(9); // удалили сабтаску из второго эпика
         System.out.println("\n" + taskManager.subtaskOfTheEpic(epic2));
-
+        /*
         System.out.println("История: " + taskManager.getHistory() + "\n");
 
 
@@ -116,6 +118,6 @@ public class Main {
 
         System.out.println("Все Эпики:");
         System.out.println(taskManager.getAllEpics() + "\n"); // Получить все эпики
-        System.out.println("История: " + taskManager.getHistory() + "\n");
+        System.out.println("История: " + taskManager.getHistory() + "\n");*/
     }
 }
