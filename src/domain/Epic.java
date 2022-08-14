@@ -5,7 +5,6 @@ import java.util.List;
 
 public class Epic extends Task {
 
-    protected TaskStatus taskStatus;
     protected List<Subtask> subtaskList = new ArrayList<>();
 
     public Epic(String taskName, String descriptionTask) {
@@ -14,16 +13,6 @@ public class Epic extends Task {
 
     public List<Subtask> getSubtaskList() {
         return subtaskList;
-    }
-
-
-    @Override
-    public TaskStatus getTaskStatus() {
-        return taskStatus;
-    }
-
-    public void setTaskStatus(TaskStatus taskStatus) {
-        this.taskStatus = taskStatus;
     }
 
     public Subtask addSubtask(Subtask subtask) {

@@ -70,7 +70,7 @@ public class Main {
 
         System.out.println("Эпик: \"Цели по обучению\"");
         Subtask subtask21 = new Subtask("Подзадача 2-1", "Взять лист бумаги и ручку",
-                TaskStatus.IN_PROGRESS, 4); // id Subtask 9
+                TaskStatus.DONE, 4); // id Subtask 9
         Subtask subtask22 = new Subtask("Подзадача 2-2", "Сформулировать цели",
                 TaskStatus.IN_PROGRESS, 4); // id Subtask 10
         Subtask subtask23 = new Subtask("Подзадача 2-3", "Повесить на видное место рядом с рабочим местом",
@@ -96,9 +96,9 @@ public class Main {
         Subtask subtask31 = new Subtask("Подзадача 3-1", "Собраться с силами =)",
                 TaskStatus.DONE, 5); // id Subtask 12
         Subtask subtask32 = new Subtask("Подзадача 3-2", "Внимательно прочитать ТЗ. Лучше несколько раз.",
-                TaskStatus.IN_PROGRESS, 5); // id Subtask 13
+                TaskStatus.DONE, 5); // id Subtask 13
         Subtask subtask33 = new Subtask("Подзадача 3-3", "Неспеша написать код и сдать в установленный дедлайн.",
-                TaskStatus.IN_PROGRESS, 5); // id Subtask 14
+                TaskStatus.DONE, 5); // id Subtask 14
 
         taskManager.addSubtask(subtask31);
         taskManager.addSubtask(subtask32);

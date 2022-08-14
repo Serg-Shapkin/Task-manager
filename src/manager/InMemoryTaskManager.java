@@ -177,7 +177,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     private TaskStatus calculateStatus(Epic epic) {
         boolean isNew = false;
-        boolean inProgress = false;
+        boolean isProgress = false;
         boolean isDone = false;
 
         for (Subtask subtask : epic.getSubtaskList()) {
@@ -187,15 +187,15 @@ public class InMemoryTaskManager implements TaskManager {
             } else if (subtask.getTaskStatus() == TaskStatus.DONE) {
                 isDone = true;
             } else {
-                inProgress = true;
+                isProgress = true;
             }
         }
 
         // если NEW == true, статус будет NEW
-        if(isNew && !inProgress && !isDone) {
+        if(isNew && !isProgress && !isDone) {
             return TaskStatus.NEW;
             // если DONE == true, статус будет DONE
-        } else if(!isNew && !inProgress && isDone) {
+        } else if(!isNew && !isProgress && isDone) {
             return TaskStatus.DONE;
         } else {
             return TaskStatus.IN_PROGRESS;
