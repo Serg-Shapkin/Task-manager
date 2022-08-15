@@ -12,13 +12,4 @@ public class Node {
         this.task = task;
         this.next = next;
     }
-
-    @Override
-    public String toString() {
-        return "Node{" +
-                "previous=" + previous +
-                ", task=" + task +
-                ", next=" + next +
-                '}';
-    }
 }

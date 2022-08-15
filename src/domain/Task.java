@@ -41,13 +41,5 @@ public class Task {
         this.taskStatus = taskStatus;
     }
 
-    @Override
-    public String toString() {
-        return "Task{" +
-                "taskName='" + taskName + '\'' +
-                ", descriptionTask='" + descriptionTask + '\'' +
-                ", idTask=" + idTask +
-                ", taskStatus=" + taskStatus +
-                '}';
-    }
+
 }

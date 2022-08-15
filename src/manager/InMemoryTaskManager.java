@@ -29,6 +29,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void removeAllTasks() { // 2.2 удалить все задачи
         for (Integer keysToHistory : taskMap.keySet()) // получили ключи задач
+
             historyManager.remove(keysToHistory);     // и удалили их из истории
 
         taskMap.clear(); // очистили полностью задачи
@@ -70,12 +71,13 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void removeAllEpics() {
-        for (Integer keysToHistory : epicMap.keySet()) // получили ключи эпиков
-            historyManager.remove(keysToHistory);     // и удалили их из истории
+        for (Integer keysToHistory : epicMap.keySet()) { // получили ключи эпиков
+            historyManager.remove(keysToHistory); // и удалили их из истории
+        }
 
-        for (Integer keysToHistory : subtaskMap.keySet()) // получили ключи сабтасок
-            historyManager.remove(keysToHistory);     // их тоже удалили из истории
-
+        for (Integer keysToHistory : subtaskMap.keySet()) { // получили ключи сабтасок
+            historyManager.remove(keysToHistory); // их тоже удалили из истории
+        }
         epicMap.clear(); // очистили эпики
         subtaskMap.clear(); // очистили сабтаски, т.к не могут существовать без эпиков
     }
@@ -156,9 +158,12 @@ public class InMemoryTaskManager implements TaskManager {
         Subtask subtask = subtaskMap.get(id); // достали подзадачу
         int epicId = subtask.getEpicId();     // получили id эпика
         Epic epic = epicMap.get(epicId);      // получили эпик
-        epic.getSubtaskList().remove(subtask); //удалили подзадачу
 
         historyManager.remove(id); // удалить сабтаску из истории просмотров
+
+        epic.getSubtaskList().remove(subtask); //удалили подзадачу
+
+
 
         epic.setTaskStatus(calculateStatus(epic)); // обновили статус эпика
         subtaskMap.remove(id);
