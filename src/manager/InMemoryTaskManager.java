@@ -3,22 +3,16 @@ package manager;
 import domain.Epic;
 import domain.Subtask;
 import domain.Task;
-import domain.TaskStatus;
 import history.HistoryManager;
-
 import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
     protected int nexId = 1;
-    private Map<Integer, Task> taskMap = new HashMap<>();
-    private Map<Integer, Epic> epicMap = new HashMap<>(); // большая задача
-    private Map<Integer, Subtask> subtaskMap = new HashMap<>(); // подзадача в большой задаче
-
-    private HistoryManager historyManager;
-
-    public InMemoryTaskManager(HistoryManager defaultHistoryManager) {
-        this.historyManager = defaultHistoryManager;
-    }
+    protected Map<Integer, Task> taskMap = new HashMap<>();
+    protected Map<Integer, Epic> epicMap = new HashMap<>(); // большая задача
+    protected Map<Integer, Subtask> subtaskMap = new HashMap<>(); // подзадача в большой задаче
+    protected CalculateStatus calculateStatus = new CalculateStatus(); // объект класса статуса задач
+    protected HistoryManager historyManager = Managers.getDefaultHistoryManager();
 
     //Task
     @Override
@@ -29,9 +23,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void removeAllTasks() { // 2.2 удалить все задачи
         for (Integer keysToHistory : taskMap.keySet()) // получили ключи задач
-
             historyManager.remove(keysToHistory);     // и удалили их из истории
-
         taskMap.clear(); // очистили полностью задачи
     }
 
@@ -143,14 +135,14 @@ public class InMemoryTaskManager implements TaskManager {
         subtaskMap.put(subtask.getIdTask(), subtask);  // добавили в коллекцию подзадачу
         Epic epic = epicMap.get(subtask.getEpicId());  // достаем задачу, в которой лежит подзадача
         epic.addSubtask(subtask); // добавляем в задачу c этим id нашу подзадач
-        epic.setTaskStatus(calculateStatus(epic)); // обновили статус эпика
+        epic.setTaskStatus(calculateStatus.calculate(epic)); // обновили статус эпика
     }
 
     @Override
     public void updateSubtask(Subtask subtask) {
         Epic epic = epicMap.get(subtask.getEpicId()); // достаем задачу, в которой лежит подзадача
         epic.addSubtask(subtask); // обновляем подзадачу
-        epic.setTaskStatus(calculateStatus(epic)); // обновили статус эпика
+        epic.setTaskStatus(calculateStatus.calculate(epic)); // обновили статус эпика
     }
 
     @Override
@@ -158,14 +150,9 @@ public class InMemoryTaskManager implements TaskManager {
         Subtask subtask = subtaskMap.get(id); // достали подзадачу
         int epicId = subtask.getEpicId();     // получили id эпика
         Epic epic = epicMap.get(epicId);      // получили эпик
-
         historyManager.remove(id); // удалить сабтаску из истории просмотров
-
         epic.getSubtaskList().remove(subtask); //удалили подзадачу
-
-
-
-        epic.setTaskStatus(calculateStatus(epic)); // обновили статус эпика
+        epic.setTaskStatus(calculateStatus.calculate(epic)); // обновили статус эпика
         subtaskMap.remove(id);
     }
 
@@ -178,33 +165,6 @@ public class InMemoryTaskManager implements TaskManager {
             }
         }
         return subtaskOfTheEpic;
-    }
-
-    private TaskStatus calculateStatus(Epic epic) {
-        boolean isNew = false;
-        boolean isProgress = false;
-        boolean isDone = false;
-
-        for (Subtask subtask : epic.getSubtaskList()) {
-            // если у эпика нет подзадач или статус NEW
-            if(subtask == null || subtask.getTaskStatus() == TaskStatus.NEW) {
-                isNew = true;
-            } else if (subtask.getTaskStatus() == TaskStatus.DONE) {
-                isDone = true;
-            } else {
-                isProgress = true;
-            }
-        }
-
-        // если NEW == true, статус будет NEW
-        if(isNew && !isProgress && !isDone) {
-            return TaskStatus.NEW;
-            // если DONE == true, статус будет DONE
-        } else if(!isNew && !isProgress && isDone) {
-            return TaskStatus.DONE;
-        } else {
-            return TaskStatus.IN_PROGRESS;
-        }
     }
 
     @Override

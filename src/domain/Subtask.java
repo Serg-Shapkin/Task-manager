@@ -1,7 +1,10 @@
 package domain;
 
+import manager.TaskType;
+
 public class Subtask extends Task {
     protected int epicId; // id нашего Epic
+    protected TaskType subtaskType = TaskType.SUBTASK;
 
     public Subtask(String taskName, String descriptionTask, TaskStatus taskStatus, int epicId) {
         super(taskName, descriptionTask, taskStatus);
@@ -14,5 +17,9 @@ public class Subtask extends Task {
 
     public void setEpicId(int epicId) {
         this.epicId = epicId;
+    }
+
+    public TaskType getSubtaskType() {
+        return subtaskType;
     }
 }

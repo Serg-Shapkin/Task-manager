@@ -4,6 +4,7 @@ import domain.Epic;
 import domain.Subtask;
 import domain.Task;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
@@ -14,9 +15,9 @@ public interface TaskManager {
 
     void removeAllTasks(); // 2.2 удалить все задачи
 
-    Task getTaskById(int id); // 2.3 получить задачу по id
+    Task getTaskById(int id) throws IOException; // 2.3 получить задачу по id
 
-    void addTask(Task task); // 2.4 новая задача, сохранить данные
+    void addTask(Task task) throws IOException; // 2.4 новая задача, сохранить данные
 
     void updateTask(Task task); // 2.5 Обновление. Новая версия с существующим id
 
@@ -27,7 +28,7 @@ public interface TaskManager {
 
     void removeAllEpics(); // удалить все Эпики
 
-    Epic getEpicById(int id); // получить Эпик по id
+    Epic getEpicById(int id) throws IOException; // получить Эпик по id
 
     void addEpic(Epic epic); // добавить эпик, может добавляться без subtask, наоборот нельзя
 
@@ -40,9 +41,9 @@ public interface TaskManager {
 
     void removeAllSubtasks(); // удалить все сабтаски
 
-    Subtask getSubtaskById(int id); // получить сабтаску по id
+    Subtask getSubtaskById(int id) throws IOException; // получить сабтаску по id
 
-    void addSubtask(Subtask subtask); // добавить сабтаску. Если нет эпика, то добавить нельзя.
+    void addSubtask(Subtask subtask) throws IOException; // добавить сабтаску. Если нет эпика, то добавить нельзя.
 
     void updateSubtask(Subtask subtask); // обновить сабтаску
 

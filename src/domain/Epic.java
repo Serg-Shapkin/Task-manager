@@ -1,9 +1,12 @@
 package domain;
 
+import manager.TaskType;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Epic extends Task {
+    protected TaskType epicType = TaskType.EPIC;
 
     protected List<Subtask> subtaskList = new ArrayList<>();
 
@@ -18,5 +21,9 @@ public class Epic extends Task {
     public Subtask addSubtask(Subtask subtask) {
         subtaskList.add(subtask);
         return subtask;
+    }
+
+    public TaskType getEpicType() {
+        return epicType;
     }
 }

@@ -3,13 +3,16 @@ import domain.Epic;
 import domain.Subtask;
 import domain.Task;
 import domain.TaskStatus;
+import manager.FileBackedTasksManager;
 import manager.Managers;
 import manager.TaskManager;
 
+import java.io.IOException;
+
 public class Main {
 
-    public static void main(String[] args) {
-        TaskManager taskManager = Managers.getDefaultTaskManager();
+    public static void main(String[] args) throws IOException {
+        /*TaskManager taskManager = Managers.getDefaultTaskManager();
 
         // создать две задачи
         Task task1 = new Task("Напоминание 1", "Сдать показания счетчиков", TaskStatus.NEW);
@@ -118,6 +121,6 @@ public class Main {
 
         System.out.println("Все Эпики:");
         System.out.println(taskManager.getAllEpics() + "\n"); // Получить все эпики
-        System.out.println("История: " + taskManager.getHistory() + "\n");
+        System.out.println("История: " + taskManager.getHistory() + "\n");*/
     }
 }

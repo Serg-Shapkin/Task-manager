@@ -1,10 +1,13 @@
 package domain;
 
+import manager.TaskType;
+
 public class Task {
     private String taskName; // имя задачи
     private String descriptionTask; // описание задачи
     private int idTask; // id задачи по которому ее можно найти
-    private TaskStatus taskStatus; //статус задачи
+    private TaskStatus taskStatus; // статус задачи
+    protected TaskType taskType = TaskType.TASK; // тип задачи
 
     public Task(String taskName, String descriptionTask, TaskStatus taskStatus) {
         this.taskName = taskName;
@@ -41,5 +44,7 @@ public class Task {
         this.taskStatus = taskStatus;
     }
 
-
+    public TaskType getTaskType() {
+        return taskType;
+    }
 }
