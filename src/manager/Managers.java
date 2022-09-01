@@ -3,7 +3,7 @@ package manager;
 import history.HistoryManager;
 import history.InMemoryHistoryManager;
 
-// не понимаю для чего и как, но вроде бы так обсуждали на встрече
+// до сих пор не понимая для чего нужен этот класс
 
 
 public final class Managers {    // понял что он должен быть final

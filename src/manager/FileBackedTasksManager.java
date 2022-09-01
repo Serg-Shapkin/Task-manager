@@ -8,8 +8,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,12 +17,24 @@ import domain.TaskStatus;
 public class FileBackedTasksManager extends InMemoryTaskManager{
 
     protected TaskToCSVConverter taskToCSV = new TaskToCSVConverter(); // класс для преобразования тасок в строку и обратно
-    private static final String FILE = "/Users/Serg/Desktop/dev/java-kanban/src/history.csv"; // как сделать относительную ссылку?
+    private static final String FILE = "src/files/history.csv"; // относительная ссылка
 
-    private static final File file = new File(FILE);
+    private static File file;
+
+    public FileBackedTasksManager(File file) { // конструктор
+        this.file = file;
+    }
+
+    /* Филипп, я честно попробовал убрать main из этого класса и оставить его только в Main,
+    хотя в нашем ТЗ говорится о том, чтобы создать тестовый main здесь.
+    Я не знаю как вызвать метод loadFromFile(File file), если я создаю экземпляр fileBackedTasksManager
+    не здесь. Да и откуда тогда я должен его вызывать тоже не разобрался.
+    Задал вопрос наставнику. Буду думать.
+    Остальное исправил.
+     */
 
     public static void main(String[] args) {
-        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager();
+        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file);
         fileBackedTasksManager.loadFromFile(file);
 
         Task task1 = new Task("Напоминание 1", "Сдать показания счетчиков", TaskStatus.NEW);
@@ -56,7 +66,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
 
         Epic epic1 = new Epic("Эпик 1", "Большой переезд."); // id Task 3
         Epic epic2 = new Epic("Эпик 2", "Записать цели по обучению на курсе."); // id Task 4
-        Epic epic3 = new Epic("Эпик 3", "Сдать финальное ТЗ 5-го спринта"); // id Task 5
+        Epic epic3 = new Epic("Эпик 3", "Сдать финальное ТЗ 6-го спринта"); // id Task 5
         fileBackedTasksManager.addEpic(epic1);
         fileBackedTasksManager.addEpic(epic2);
         fileBackedTasksManager.addEpic(epic3);
@@ -110,11 +120,11 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
 
 
         System.out.println("Эпик: \"ТЗ-5\"");
-        Subtask subtask31 = new Subtask("Подзадача 3-1", "Собраться с силами =)",
+        Subtask subtask31 = new Subtask("Подзадача 3-1", "Собраться с силами. Уфффф..",
                 TaskStatus.DONE, 5); // id Subtask 12
         Subtask subtask32 = new Subtask("Подзадача 3-2", "Внимательно прочитать ТЗ. Лучше несколько раз.",
                 TaskStatus.DONE, 5); // id Subtask 13
-        Subtask subtask33 = new Subtask("Подзадача 3-3", "Неспеша написать код и сдать в установленный дедлайн.",
+        Subtask subtask33 = new Subtask("Подзадача 3-3", "Жесткий дедлайн! Написать код и сдать в срок!",
                 TaskStatus.DONE, 5); // id Subtask 14
 
         fileBackedTasksManager.addSubtask(subtask31);
@@ -162,7 +172,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
     }
 
     protected FileBackedTasksManager loadFromFile(File file) {
-        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager();
+        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file);
         try {
             List<String> strings = Files.readAllLines(file.toPath()); // считали все строки файла и сохранили в коллекцию
             List<Integer> loadHistory = new ArrayList<>();
