@@ -2,11 +2,11 @@ package history;
 
 import domain.Task;
 
-import java.util.Collection;
+import java.util.List;
 
 public interface HistoryManager {
 
-    Collection<Task> getHistory();
+    List<Task> getHistory();
 
     void addTask(Task task);
 

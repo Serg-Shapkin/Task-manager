@@ -11,12 +11,10 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
-import domain.TaskStatus;
 
+public class FileBackedTasksManager extends InMemoryTaskManager {
 
-public class FileBackedTasksManager extends InMemoryTaskManager{
-
-    protected TaskToCSVConverter taskToCSV = new TaskToCSVConverter(); // класс для преобразования тасок в строку и обратно
+    protected static TaskToCSVConverter taskToCSV = new TaskToCSVConverter(); // класс для преобразования тасок в строку и обратно
     private static final String FILE = "src/files/history.csv"; // относительная ссылка
 
     private static File file;
@@ -25,131 +23,11 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
         this.file = file;
     }
 
-    /* Филипп, я честно попробовал убрать main из этого класса и оставить его только в Main,
-    хотя в нашем ТЗ говорится о том, чтобы создать тестовый main здесь.
-    Я не знаю как вызвать метод loadFromFile(File file), если я создаю экземпляр fileBackedTasksManager
-    не здесь. Да и откуда тогда я должен его вызывать тоже не разобрался.
-    Задал вопрос наставнику. Буду думать.
-    Остальное исправил.
-     */
-
-    public static void main(String[] args) {
-        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file);
-        fileBackedTasksManager.loadFromFile(file);
-
-        Task task1 = new Task("Напоминание 1", "Сдать показания счетчиков", TaskStatus.NEW);
-        Task task2 = new Task("Напоминание 2", "Оплатить квитанции КУ", TaskStatus.IN_PROGRESS);
-
-        fileBackedTasksManager.addTask(task1);
-        fileBackedTasksManager.addTask(task2);
-
-        System.out.println(fileBackedTasksManager.getAllTasks());
-        System.out.println("- - - - - - - - - - - - - - -");
-
-        System.out.println("Запросили задачу №1 по id");
-        fileBackedTasksManager.getTaskById(1);
-        System.out.println("Запросили задачу №2 по id");
-        fileBackedTasksManager.getTaskById(2);
-        System.out.println("История №1: " + fileBackedTasksManager.getHistory());
-
-        System.out.println("Еще раз запросили задачу №1 по id");
-        fileBackedTasksManager.getTaskById(1);
-        System.out.println("Еще раз запросили задачу №2 по id");
-        fileBackedTasksManager.getTaskById(2);
-        System.out.println("История №2: " + fileBackedTasksManager.getHistory());
-
-        System.out.println("Удаляем задачу №2 по id");
-        fileBackedTasksManager.removeTaskById(2);
-        System.out.println("История после удаления: " + fileBackedTasksManager.getHistory());
-
-        System.out.println("- - - - - - - - - - - - - - -");
-
-        Epic epic1 = new Epic("Эпик 1", "Большой переезд."); // id Task 3
-        Epic epic2 = new Epic("Эпик 2", "Записать цели по обучению на курсе."); // id Task 4
-        Epic epic3 = new Epic("Эпик 3", "Сдать финальное ТЗ 6-го спринта"); // id Task 5
-        fileBackedTasksManager.addEpic(epic1);
-        fileBackedTasksManager.addEpic(epic2);
-        fileBackedTasksManager.addEpic(epic3);
-
-        System.out.println("Все Эпики:");
-        System.out.println(fileBackedTasksManager.getAllEpics() + "\n"); // Получить все эпики
-
-        System.out.println("Эпик: \"Большой переезд\"");
-        Subtask subtask11 = new Subtask("Подзадача 1-1", "Собрать коробки",
-                TaskStatus.NEW, 3); // id Subtask 6
-        Subtask subtask12 = new Subtask("Подзадача 1-2", "Позвать друзей",
-                TaskStatus.NEW, 3);  // id Subtask 7
-        Subtask subtask13 = new Subtask("Подзадача 1-3", "Загрузить все в машину",
-                TaskStatus.NEW, 3);  // id Subtask 8
-
-        fileBackedTasksManager.addSubtask(subtask11);
-        fileBackedTasksManager.addSubtask(subtask12);
-        fileBackedTasksManager.addSubtask(subtask13);
-
-        System.out.println(fileBackedTasksManager.getEpicById(3)); // Получить эпик "Большой переезд"
-        System.out.println(fileBackedTasksManager.getSubtaskById(6));
-        System.out.println(fileBackedTasksManager.getSubtaskById(7));
-        System.out.println(fileBackedTasksManager.getSubtaskById(8));
-
-        System.out.println("История: " + fileBackedTasksManager.getHistory() + "\n");
-
-        System.out.println("Эпик: \"Цели по обучению\"");
-        Subtask subtask21 = new Subtask("Подзадача 2-1", "Взять лист бумаги и ручку",
-                TaskStatus.DONE, 4); // id Subtask 9
-        Subtask subtask22 = new Subtask("Подзадача 2-2", "Сформулировать цели",
-                TaskStatus.IN_PROGRESS, 4); // id Subtask 10
-        Subtask subtask23 = new Subtask("Подзадача 2-3", "Повесить на видное место рядом с рабочим местом",
-                TaskStatus.NEW, 4); // id Subtask 11
-
-        fileBackedTasksManager.addSubtask(subtask21);
-        fileBackedTasksManager.addSubtask(subtask22);
-        fileBackedTasksManager.addSubtask(subtask23);
-
-        System.out.println(fileBackedTasksManager.getEpicById(4)); // Получить эпик "Цели по обучению"
-
-        System.out.println(fileBackedTasksManager.getSubtaskById(9));
-        System.out.println(fileBackedTasksManager.getSubtaskById(10));
-        System.out.println(fileBackedTasksManager.getSubtaskById(11));
-
-        System.out.println("История: " + fileBackedTasksManager.getHistory() + "\n");
-
-        fileBackedTasksManager.removeSubtaskById(9); // удалили сабтаску из второго эпика // ???
-        System.out.println("\n" + fileBackedTasksManager.subtaskOfTheEpic(epic2));
-
-        System.out.println("История: " + fileBackedTasksManager.getHistory() + "\n");
-
-
-        System.out.println("Эпик: \"ТЗ-5\"");
-        Subtask subtask31 = new Subtask("Подзадача 3-1", "Собраться с силами. Уфффф..",
-                TaskStatus.DONE, 5); // id Subtask 12
-        Subtask subtask32 = new Subtask("Подзадача 3-2", "Внимательно прочитать ТЗ. Лучше несколько раз.",
-                TaskStatus.DONE, 5); // id Subtask 13
-        Subtask subtask33 = new Subtask("Подзадача 3-3", "Жесткий дедлайн! Написать код и сдать в срок!",
-                TaskStatus.DONE, 5); // id Subtask 14
-
-        fileBackedTasksManager.addSubtask(subtask31);
-        fileBackedTasksManager.addSubtask(subtask32);
-        fileBackedTasksManager.addSubtask(subtask33);
-
-        System.out.println(fileBackedTasksManager.getEpicById(5)); // Получить эпик "ТЗ-5"
-        System.out.println(fileBackedTasksManager.getSubtaskById(12));
-        System.out.println(fileBackedTasksManager.getSubtaskById(13));
-        System.out.println(fileBackedTasksManager.getSubtaskById(14));
-
-        System.out.println("История: " + fileBackedTasksManager.getHistory() + "\n");
-
-        System.out.println("Удаляем эпик: \"Большой переезд\""); // ???
-        fileBackedTasksManager.removeEpicById(3);
-
-        System.out.println("Все Эпики:");
-        System.out.println(fileBackedTasksManager.getAllEpics() + "\n"); // Получить все эпики
-        System.out.println("История: " + fileBackedTasksManager.getHistory() + "\n");
-    }
-
+   // Филипп, я все таки убрал main из этого класса. Согласен, так чище и не дублируем код.
 
     protected void save() { // сохраняем задачи в файл
         try (FileWriter fileWriter = new FileWriter(FILE)) {
-            fileWriter.write("id,type,name,status,description,epic" + "\n");
+            fileWriter.write("ID,TYPE,NAME,STATUS,DESCRIPTION,EPIC_ID,DURATION,START_TIME,END_TIME" + "\n");
 
             for(Task task : taskMap.values()) {
                 fileWriter.write(taskToCSV.toString(task));
@@ -164,73 +42,157 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
             }
 
             fileWriter.write("\n"); // пустая строка перед историей просмотров
-            fileWriter.write(taskToCSV.historyToString(historyManager));
+            fileWriter.write(TaskToCSVConverter.historyToString(historyManager));
 
-        } catch (IOException e) {
-            throw new ManagerSaveException("Ошибка записи.");
+        } catch (IOException exception) {
+            throw new ManagerSaveException("Ошибка записи " + exception.getMessage());
         }
     }
 
-    protected FileBackedTasksManager loadFromFile(File file) {
+    public static FileBackedTasksManager loadFromFile(File file) { // восстанавливаем задачи из файла
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file);
         try {
             List<String> strings = Files.readAllLines(file.toPath()); // считали все строки файла и сохранили в коллекцию
             List<Integer> loadHistory = new ArrayList<>();
-            for (int i = 1; i < strings.size(); i++) { // 1 - пропустил первую строку т.к. заголовок
+            for (int i = 1; i < strings.size(); i++) { // пропустил первую строку т.к. заголовок
                 String line = strings.get(i);
-                if (line.isEmpty()){
-                    loadHistory = taskToCSV.historyFromString(strings.get(i+1)); // если строка пустая, то переходим на следующую и парсим историю
+                if (line.isEmpty()){ // если строка пустая,
+                    loadHistory = TaskToCSVConverter.historyFromString(strings.get(i+1)); // то переходим на следующую и парсим историю
                     break;
                 }
                 Task task = taskToCSV.fromString(line);
                 fileBackedTasksManager.addTask(task); // восстановили задачи
             }
 
-        } catch (IOException e) {
-            throw new ManagerSaveException("Ошибка чтения файла.");
+        } catch (IOException exception) {
+            throw new ManagerSaveException("Ошибка чтения файла");
         }
         return fileBackedTasksManager;
     }
 
     // Task
     @Override
-    public void addTask(Task task) {
-        super.addTask(task);
+    public void removeAllTasks() {
+        super.removeAllTasks();
         save();
     }
 
     @Override
     public Task getTaskById(int id) {
-        Task task = super.getTaskById(id);
-        save();
+        Task task = null;
+        try {
+            task = super.getTaskById(id);
+            save();
+        } catch (NullPointerException exception) {
+            System.out.println("Задачи с" + id + "нет.");
+        }
         return task;
+    }
+
+    @Override
+    public int addTask(Task task) {
+        super.addTask(task);
+        save();
+        return task.getIdTask();
+    }
+
+     @Override
+     public void updateTask(Task task) {
+        super.updateTask(task);
+        save();
+     }
+
+    @Override
+    public void removeTaskById(int id) {
+        try {
+            super.removeTaskById(id);
+            save();
+        } catch (NullPointerException exception) {
+            System.out.println("Задачи с" + id + "нет.");
+        }
     }
 
     // Epic
     @Override
-    public void addEpic(Epic epic) {
-        super.addEpic(epic);
+    public void removeAllEpics() {
+        super.removeAllEpics();
         save();
     }
 
     @Override
     public Epic getEpicById(int id) {
-        Epic epic = super.getEpicById(id);
-        save();
+        Epic epic = null;
+        try {
+            epic = super.getEpicById(id);
+            save();
+        } catch (NullPointerException exception) {
+            System.out.println("Задачи с" + id + "нет.");
+        }
         return epic;
+    }
+
+    @Override
+    public int addEpic(Epic epic) {
+        super.addEpic(epic);
+        save();
+        return epic.getIdTask();
+    }
+
+    @Override
+    public void updateEpic(Epic epic) {
+        super.updateEpic(epic);
+        save();
+    }
+
+    @Override
+    public void removeEpicById(int id) {
+        try {
+            super.removeEpicById(id);
+            save();
+        } catch (NullPointerException exception) {
+            System.out.println("Эпика с" + id + "нет");
+        }
     }
 
     // Subtask
     @Override
-    public void addSubtask(Subtask subtask) {
-        super.addSubtask(subtask);
+    public void removeAllSubtasks() {
+        super.removeAllSubtasks();
         save();
     }
 
     @Override
     public Subtask getSubtaskById(int id) {
-        Subtask subtask = super.getSubtaskById(id);
-        save();
+        Subtask subtask = null;
+        try {
+            subtask = super.getSubtaskById(id);
+            save();
+        } catch (NullPointerException exception) {
+            System.out.println("Эпика с" + id + "нет");
+        }
         return subtask;
+    }
+
+    @Override
+    public int addSubtask(Subtask subtask) {
+        super.addSubtask(subtask);
+        save();
+        return subtask.getIdTask();
+    }
+
+    @Override
+    public void updateSubtask(Subtask subtask) {
+        super.updateSubtask(subtask);
+        save();
+    }
+
+    @Override
+    public void removeSubtaskById(int id) {
+        try {
+            super.removeSubtaskById(id);
+            save();
+        } catch (NullPointerException exception) {
+            System.out.println("Подзадачи с" + id + "нет");
+        }
     }
 }

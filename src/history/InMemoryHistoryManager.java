@@ -21,7 +21,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         last = node;
     }
 
-    public Collection<Task> getTasks() { // получаем задачи в обычный ArrayList
+    public List<Task> getTasks() { // получаем задачи в обычный ArrayList
         final List<Task> allTasks = new ArrayList<>();
         Node node = first;
         while (node != null) {
@@ -55,7 +55,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     @Override
-    public Collection<Task> getHistory() { // получить историю
+    public List<Task> getHistory() { // получить историю
         return getTasks();
     }
 

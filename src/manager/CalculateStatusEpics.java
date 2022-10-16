@@ -4,8 +4,8 @@ import domain.Epic;
 import domain.Subtask;
 import domain.TaskStatus;
 
-public class CalculateStatus {
-    public TaskStatus calculate(Epic epic) {
+public class CalculateStatusEpics {
+    public TaskStatus calculateStatus(Epic epic) {
         boolean isNew = false;
         boolean isProgress = false;
         boolean isDone = false;
