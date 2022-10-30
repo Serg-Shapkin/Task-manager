@@ -15,7 +15,7 @@ import java.util.List;
 public class TaskToCSVConverter {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    protected String toString(Task task) { // сохраняем задачи в CSV
+    public static String toString(Task task) { // сохраняем задачи в CSV
 
         if (task instanceof Epic) {
             return task.getIdTask() + "," +                        // 1 - ID
@@ -49,7 +49,7 @@ public class TaskToCSVConverter {
                 getEndTime(task) + "\n";                           // 9 - END_TIME
     }
 
-    private String getEndTime(Task task) {
+    private static String getEndTime(Task task) {
         if (task.getStartTime() == null) {
             return "невозможно рассчитать";
         } else {
@@ -57,7 +57,7 @@ public class TaskToCSVConverter {
         }
     }
 
-    protected Task fromString(String value) { // создание задачи из истории (из CSV)
+    public static Task fromString(String value) { // создание задачи из истории (из CSV)
         final String[] line = value.split(",");
 
         final int idTask = Integer.parseInt(line[0]);              // 0 - ID

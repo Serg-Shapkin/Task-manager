@@ -160,5 +160,12 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
     void getHistory() throws IOException {
         super.getHistory();
     }
+
+    // getPrioritizedTasks
+    @DisplayName("Проверка приоритета задач")
+    @Test
+    void getPrioritizedTasks() throws IOException {
+        super.getPrioritizedTasks();
+    }
 }
 

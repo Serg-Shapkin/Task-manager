@@ -14,16 +14,13 @@ public class InMemoryTaskManager implements TaskManager {
     protected final Map<Integer, Epic> epicMap = new HashMap<>(); // большая задача
     protected final Map<Integer, Subtask> subtaskMap = new HashMap<>(); // подзадача в большой задаче
 
+    protected final Map<LocalDateTime, Task> duplicatesDateMap = new HashMap<>();
 
     protected final CalculateStatusEpics calculateStatus = new CalculateStatusEpics();
-
     protected final HistoryManager historyManager = Managers.getDefaultHistoryManager();
 
-    protected final LocalDateTimeComparator comparator = new LocalDateTimeComparator(); // создали компоратор
-
+    protected final LocalDateTimeComparator comparator = new LocalDateTimeComparator(); // создали компаратор для сортировки задач
     protected final Set<Task> prioritizedTasks = new TreeSet<>(comparator); // для отсортированных задач
-
-
 
     //Task
     @Override
@@ -49,17 +46,16 @@ public class InMemoryTaskManager implements TaskManager {
     public int addTask(Task task) {
         task.setIdTask(nexId++);
         taskMap.put(task.getIdTask(), task);
-
         prioritizedTasks.add(task); // добавили в сортировку
-
+        CheckingTimeIntersections(task); // проверяем на пересечение по времени
         return task.getIdTask();
     }
 
     @Override
     public void updateTask(Task task) {    // 2.5 Обновление. Новая версия с существующим id
         taskMap.put(task.getIdTask(), task);
-
         prioritizedTasks.add(task); // добавили в сортировку
+        CheckingTimeIntersections(task); // проверяем на пересечение по времени
     }
 
     @Override
@@ -102,18 +98,20 @@ public class InMemoryTaskManager implements TaskManager {
     public int addEpic(Epic epic) { // epic может добавляться без subtask, наоборот нельзя
         epic.setIdTask(nexId++);
         epicMap.put(epic.getIdTask(), epic);
+        CheckingTimeIntersections(epic); // проверяем на пересечение по времени
         return epic.getIdTask();
     }
 
     @Override
     public void updateEpic(Epic epic) {
         epicMap.put(epic.getIdTask(), epic);
+        CheckingTimeIntersections(epic); // проверяем на пересечение по времени
     }
 
     @Override
     public void removeEpicById(int id) { // переделал, т.к. раньше не удалял подзадачи удаляемого эпика
         Epic epic = epicMap.get(id);
-        List<Subtask> allSubtasksOfTheEpic = subtaskOfTheEpic(epic);
+        List<Subtask> allSubtasksOfTheEpic = getSubtaskOfTheEpic(epic);
         for (Subtask subtask : allSubtasksOfTheEpic) {
             subtaskMap.remove(subtask.getIdTask()); // удаляем сначала подзадачи конкретного эпика
             historyManager.remove(subtask.getIdTask()); // удаляем подзадачи из истории
@@ -156,7 +154,7 @@ public class InMemoryTaskManager implements TaskManager {
         epic.setTaskStatus(calculateStatus.calculateStatus(epic)); // обновили статус эпика
 
         prioritizedTasks.add(subtask); //добавили в сортировку
-
+        CheckingTimeIntersections(subtask); // проверяем на пересечение по времени
 
         if (subtask.getStartTime() != null) {
             calculateTime(epic.getIdTask()); // обновили время эпика
@@ -170,8 +168,8 @@ public class InMemoryTaskManager implements TaskManager {
         Epic epic = epicMap.get(subtask.getEpicId()); // достаем задачу, в которой лежит подзадача
         epic.addSubtask(subtask); // обновляем подзадачу
         epic.setTaskStatus(calculateStatus.calculateStatus(epic)); // обновили статус эпика
-
         prioritizedTasks.add(subtask); // добавили в сортировку
+        CheckingTimeIntersections(subtask); // проверяем на пересечение по времени
     }
 
     @Override
@@ -186,7 +184,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public List<Subtask> subtaskOfTheEpic(Epic epic) { // получить список подзадач определенного эпика
+    public List<Subtask> getSubtaskOfTheEpic(Epic epic) { // получить список подзадач определенного эпика
         List<Subtask> allSubtaskOfTheEpic = new ArrayList<>();
         for (Subtask subtask : epic.getSubtaskList()) {
             if (subtask.getEpicId() == epic.getIdTask()) {
@@ -209,7 +207,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void calculateTime(int id) {
         Epic epic = epicMap.get(id);
 
-        List<Subtask> allSubtasksOfTheEpic = subtaskOfTheEpic(epic);
+        List<Subtask> allSubtasksOfTheEpic = getSubtaskOfTheEpic(epic);
 
         if (allSubtasksOfTheEpic.isEmpty()) {
             epic.setStartTime(null);
@@ -229,6 +227,37 @@ public class InMemoryTaskManager implements TaskManager {
             epic.setStartTime(epicMinTime);
             epic.setEndTime(epicMinTime.plusMinutes(epicDuration));
             epic.setDuration(epicDuration);
+        }
+    }
+
+    protected void CheckingTimeIntersections(Task task) { // проверка на пересечение задач по времени
+        String message = null;
+
+        if (task.getStartTime() != null) {
+            LocalDateTime startTime = task.getStartTime();
+            LocalDateTime endTime = task.getStartTime().plusMinutes(task.getDuration());
+
+            for (Map.Entry<LocalDateTime, Task> entry : duplicatesDateMap.entrySet()) {
+                final Task currentTask = entry.getValue();
+                final LocalDateTime currentStartTime = currentTask.getStartTime();
+                final LocalDateTime currentEndTime = currentTask.getStartTime().plusMinutes(task.getDuration());
+
+                if (!endTime.isAfter(currentStartTime)) {
+                    continue;
+                }
+                if (!currentEndTime.isAfter(startTime)) {
+                    continue;
+                }
+                message = "Найдено пересечение по времени задачи id=" + currentTask.getIdTask() + " с задачей id=" + task.getIdTask() + "\n"+
+                        "Дата и время начала выполнения задачи id=" + currentTask.getIdTask() + ": " + currentStartTime +
+                        ", окончание: " + currentEndTime + "\n" +
+                        "Дата и время начала выполнения задачи id=" + task.getIdTask() + ": " + startTime +
+                        ", окончание: " + endTime + "\n";
+            }
+            duplicatesDateMap.put(startTime, task);
+        }
+        if (message != null) {
+            System.out.println(message);
         }
     }
 }

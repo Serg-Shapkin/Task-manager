@@ -8,9 +8,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
-abstract class TaskManagerTest <T extends TaskManager> {
+abstract class TaskManagerTest<T extends TaskManager> {
     protected T taskManager;
 
     // Task
@@ -379,7 +380,7 @@ abstract class TaskManagerTest <T extends TaskManager> {
         taskManager.addSubtask(subtask12);
         taskManager.addSubtask(subtask13);
 
-        final List<Subtask> subtasks = taskManager.subtaskOfTheEpic(epic1);
+        final List<Subtask> subtasks = taskManager.getSubtaskOfTheEpic(epic1);
 
         assertNotNull(subtasks, "Подзадачи не возвращаются");
         assertEquals(3, subtasks.size(),"Неверное количество подзадач");
@@ -480,6 +481,27 @@ abstract class TaskManagerTest <T extends TaskManager> {
         assertNotNull(historyTask, "История не возвращается");
         assertEquals(2, historyTask.size(), "Неверное количество записей в истории");
         assertEquals(task1, historyTask.get(0), "Задачи не совпадают");
+    }
+
+    // getPrioritizedTasks
+    @Test
+    void getPrioritizedTasks() throws IOException {
+        Task task1 = new Task("Напоминание 1", "Сдать показания счетчиков", TaskStatus.NEW);
+        Task task2 = new Task("Напоминание 2", "Оплатить квитанции КУ", TaskStatus.IN_PROGRESS,
+                15, LocalDateTime.of(2022, 10, 25, 14, 0));
+        Task task3 = new Task("Напоминание 3", "Почесать кота", TaskStatus.DONE,
+                15, LocalDateTime.of(2022, 10, 25, 14, 0));
+
+        taskManager.addTask(task1);
+        taskManager.addTask(task2);
+        taskManager.addTask(task3);
+
+        Task[] tasks = new Task[3];
+        tasks = taskManager.getPrioritizedTasks().toArray(tasks);
+
+        assertNotNull(tasks, "задачи не возвращаются");
+        assertEquals(3, tasks.length, "Неверное количество задач");
+        assertEquals(task2, tasks[0], "Задачи не совпадают");
     }
 }
 

@@ -12,10 +12,12 @@ import java.io.IOException;
 class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager> {
     private File file;
 
+    final String FILE = "src/files/history.csv";
+
     @BeforeEach // создаем файл перед каждым тестом
     void setUp() {
-        file = new File("src/files/history.csv");
-        taskManager = new FileBackedTasksManager(file);
+        //file = new File("src/files/history.csv");
+        taskManager = new FileBackedTasksManager(FILE);
     }
 
     // Task
@@ -165,5 +167,12 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
     @Test
     void getHistory() throws IOException {
         super.getHistory();
+    }
+
+    // getPrioritizedTasks
+    @DisplayName("Проверка приоритета задач")
+    @Test
+    void getPrioritizedTasks() throws IOException {
+        super.getPrioritizedTasks();
     }
 }

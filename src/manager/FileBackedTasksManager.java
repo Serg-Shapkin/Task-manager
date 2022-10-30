@@ -15,15 +15,21 @@ import java.util.List;
 public class FileBackedTasksManager extends InMemoryTaskManager {
 
     protected static TaskToCSVConverter taskToCSV = new TaskToCSVConverter(); // класс для преобразования тасок в строку и обратно
-    private static final String FILE = "src/files/history.csv"; // относительная ссылка
+/*    private static final String FILE = "src/files/history.csv"; // относительная ссылка
 
     private static File file;
 
     public FileBackedTasksManager(File file) { // конструктор
         this.file = file;
+    }*/
+
+    protected final String FILE;
+    private static final String SOURCE = "http://localhost:8078/";
+
+    public FileBackedTasksManager(String source) {
+        this.FILE = source;
     }
 
-   // Филипп, я все таки убрал main из этого класса. Согласен, так чище и не дублируем код.
 
     protected void save() { // сохраняем задачи в файл
         try (FileWriter fileWriter = new FileWriter(FILE)) {
@@ -44,13 +50,13 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             fileWriter.write("\n"); // пустая строка перед историей просмотров
             fileWriter.write(TaskToCSVConverter.historyToString(historyManager));
 
-        } catch (IOException exception) {
+        } catch (IOException | ManagerSaveException exception) {
             throw new ManagerSaveException("Ошибка записи " + exception.getMessage());
         }
     }
 
     public static FileBackedTasksManager loadFromFile(File file) { // восстанавливаем задачи из файла
-        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file);
+        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(SOURCE);
         try {
             List<String> strings = Files.readAllLines(file.toPath()); // считали все строки файла и сохранили в коллекцию
             List<Integer> loadHistory = new ArrayList<>();
@@ -65,7 +71,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             }
 
         } catch (IOException exception) {
-            throw new ManagerSaveException("Ошибка чтения файла");
+            throw new ManagerSaveException("Ошибка чтения файла.");
         }
         return fileBackedTasksManager;
     }
