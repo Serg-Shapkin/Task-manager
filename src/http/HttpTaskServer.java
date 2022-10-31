@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 
 
 public class HttpTaskServer {
-    private static final int PORT = 8081;
+    private static final int PORT = 8080;
     private final HttpServer server;
     private final Gson gson;
     private final TaskManager taskManager;

@@ -95,11 +95,10 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public int addEpic(Epic epic) { // epic может добавляться без subtask, наоборот нельзя
+    public void addEpic(Epic epic) { // epic может добавляться без subtask, наоборот нельзя
         epic.setIdTask(nexId++);
         epicMap.put(epic.getIdTask(), epic);
         CheckingTimeIntersections(epic); // проверяем на пересечение по времени
-        return epic.getIdTask();
     }
 
     @Override

@@ -22,7 +22,7 @@ public interface TaskManager {
     List<Epic> getAllEpics();
     void removeAllEpics();
     Epic getEpicById(int id) throws IOException;
-    int addEpic(Epic epic);
+    void addEpic(Epic epic);
     void updateEpic(Epic epic);
     void removeEpicById(int id);
 
