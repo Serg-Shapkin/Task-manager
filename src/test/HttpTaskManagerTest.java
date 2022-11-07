@@ -6,6 +6,7 @@ import http.HttpTaskManager;
 import manager.FileBackedTasksManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import server.KVServer;
@@ -33,6 +34,7 @@ public class HttpTaskManagerTest extends TaskManagerTest <HttpTaskManager> {
         server.stop();
     }
 
+    @DisplayName("Проверка сохранения и удаления задачи")
     @Test
     void saveAndRecoveryTask() throws IOException, InterruptedException {
         Task task = new Task("Напоминание 1", "Сдать показания счетчиков", TaskStatus.NEW);
@@ -44,6 +46,7 @@ public class HttpTaskManagerTest extends TaskManagerTest <HttpTaskManager> {
         assertEquals(0, tasks.size(), "Задач быть не должно");
     }
 
+    @DisplayName("Проверка сохранения и удаления эпика")
     @Test
     void saveAndRecoveryEpic() throws IOException, InterruptedException {
         Epic epic = new Epic("Эпик 1", "Большой переезд");
@@ -54,5 +57,4 @@ public class HttpTaskManagerTest extends TaskManagerTest <HttpTaskManager> {
         assertEquals(0, subtasks.size(),"Подзадачи быть не должно");
 
     }
-
 }

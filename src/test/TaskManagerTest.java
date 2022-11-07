@@ -5,6 +5,7 @@ import domain.TaskStatus;
 import manager.TaskManager;
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -16,6 +17,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
     // Task
     // getAllTasks()
+    @DisplayName("Проверка получения всех задач")
     @Test
     void getAllTasks() throws IOException {
         Task task1 = new Task("Напоминание 1", "Сдать показания счетчиков", TaskStatus.NEW);
@@ -32,6 +34,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     // removeAllTasks()
+    @DisplayName("Проверка удаления всех задач")
     @Test
     void removeAllTasks() throws IOException {
         Task task1 = new Task("Напоминание 1", "Сдать показания счетчиков", TaskStatus.NEW);
@@ -46,6 +49,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     // getTaskById()
+    @DisplayName("Проверка получения задачи по id")
     @Test
     void getTaskById() throws IOException {
         Task task1 = new Task("Напоминание 1", "Сдать показания счетчиков", TaskStatus.NEW);
@@ -59,6 +63,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     // addTask()
+    @DisplayName("Проверка добавления задачи")
     @Test
     void addTask() throws IOException {
         Task task1 = new Task("Напоминание 1", "Сдать показания счетчиков", TaskStatus.NEW);
@@ -77,6 +82,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     // updateTask()
+    @DisplayName("Проверка обновления задачи")
     @Test
     void updateTask() throws IOException {
         Task task1 = new Task("Напоминание 1", "Сдать показания счетчиков", TaskStatus.NEW);
@@ -102,6 +108,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     // removeTaskById()
+    @DisplayName("Проверка удаления задачи по id")
     @Test
     void removeTaskById() throws IOException {
         Task task1 = new Task("Напоминание 1", "Сдать показания счетчиков", TaskStatus.NEW);
@@ -121,6 +128,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
     // Epic
     // getAllEpics()
+    @DisplayName("Проверка получения всех эпиков")
     @Test
     void getAllEpics() {
         Epic epic1 = new Epic("Эпик 1", "Большой переезд."); // id Task 3
@@ -135,6 +143,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     // removeAllEpics()
+    @DisplayName("Проверка удаления всех эпиков")
     @Test
     void removeAllEpics() {
         Epic epic1 = new Epic("Эпик 1", "Большой переезд."); // id Task 3
@@ -149,6 +158,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     // getEpicById()
+    @DisplayName("Проверка получения эпика по id")
     @Test
     void getEpicById() throws IOException {
         Epic epic1 = new Epic("Эпик 1", "Большой переезд."); // id Task 3
@@ -162,6 +172,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     // addEpic()
+    @DisplayName("Проверка добавления эпика")
     @Test
     void addEpic() throws IOException {
         Epic epic1 = new Epic("Эпик 1", "Большой переезд."); // id Task 3
@@ -180,6 +191,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     // updateEpic()
+    @DisplayName("Проверка обновления эпика")
     @Test
     void updateEpic() throws IOException {
         Epic epic1 = new Epic("Эпик 1", "Большой переезд."); // id Task 3
@@ -205,6 +217,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     // removeEpicById
+    @DisplayName("Проверка удаления эпика по id")
     @Test
     void removeEpicById() {
         Epic epic1 = new Epic("Эпик 1", "Большой переезд."); // id Task 3
@@ -223,6 +236,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
     // Subtask
     // getAllSubtask()
+    @DisplayName("Проверка получения всех подзадач")
     @Test
     void getAllSubtask() throws IOException {
         Epic epic1 = new Epic("Эпик 1", "Большой переезд."); // id Task 3
@@ -247,6 +261,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     // removeAllSubtasks()
+    @DisplayName("Проверка удаления всех подзадач")
     @Test
     void removeAllSubtask() throws IOException {
         Epic epic1 = new Epic("Эпик 1", "Большой переезд."); // id Task 3
@@ -271,6 +286,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     // getSubtaskById()
+    @DisplayName("Проверка получения подзадачи по id")
     @Test
     void getSubtaskById() throws IOException {
         Epic epic1 = new Epic("Эпик 1", "Большой переезд."); // id Task 3
@@ -288,6 +304,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     // addSubtask()
+    @DisplayName("Проверка добавления подзадачи")
     @Test
     void addSubtask() throws IOException {
         Epic epic1 = new Epic("Эпик 1", "Большой переезд."); // id Task 3
@@ -318,6 +335,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     // updateSubtask()
+    @DisplayName("Проверка обновления подзадачи")
     @Test
     void updateSubtask() throws IOException {
         Epic epic1 = new Epic("Эпик 1", "Большой переезд."); // id Task 3
@@ -348,6 +366,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     // removeSubtaskById()
+    @DisplayName("Проверка удаления подзадачи по id")
     @Test
     void removeSubtaskById() throws IOException {
         Epic epic1 = new Epic("Эпик 1", "Большой переезд."); // id Task 3
@@ -364,6 +383,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     // subtaskOfTheEpic()
+    @DisplayName("Проверка получения списка подзадач эпика")
     @Test
     void subtaskOfTheEpic() throws IOException {
         Epic epic1 = new Epic("Эпик 1", "Большой переезд."); // id Task 3
@@ -388,6 +408,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     // CalculateStatus
+    @DisplayName("Проверка статуса эпика если у трех подзадач статус NEW")
     @Test
     void calculateStatusIfThreeSubtasksAreNew() throws IOException {
         Epic epic1 = new Epic("Эпик 1", "Большой переезд."); // id Task 3
@@ -407,6 +428,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
         assertEquals(epic1.getTaskStatus(), TaskStatus.NEW, "Неверный статус задачи");
     }
 
+    @DisplayName("Проверка статуса эпика если у трех подзадач статус IN_PROGRESS")
     @Test
     void calculateStatusIfThreeSubtasksAreInProgress() throws IOException {
         Epic epic1 = new Epic("Эпик 1", "Большой переезд."); // id Task 3
@@ -426,6 +448,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
         assertEquals(epic1.getTaskStatus(), TaskStatus.IN_PROGRESS, "Неверный статус задачи");
     }
 
+    @DisplayName("Проверка статуса эпика если у трех подзадач статус DONE")
     @Test
     void calculateStatusIfThreeSubtasksAreDone() throws IOException {
         Epic epic1 = new Epic("Эпик 1", "Большой переезд."); // id Task 3
@@ -445,6 +468,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
         assertEquals(epic1.getTaskStatus(), TaskStatus.DONE, "Неверный статус задачи");
     }
 
+    @DisplayName("Проверка статуса эпика если у двух подзадач статус NEW и у одной DONE")
     @Test
     void calculateStatusIfTwoNewAndOneDoneSubtask() throws IOException {
         Epic epic1 = new Epic("Эпик 1", "Большой переезд."); // id Task 3
@@ -464,6 +488,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
         assertEquals(epic1.getTaskStatus(), TaskStatus.IN_PROGRESS, "Неверный статус задачи");
     }
 
+    @DisplayName("Проверка получения истории")
     // getHistory
     @Test
     void getHistory() throws IOException {
@@ -483,6 +508,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
         assertEquals(task1, historyTask.get(0), "Задачи не совпадают");
     }
 
+    @DisplayName("Проверка приоритета задач")
     // getPrioritizedTasks
     @Test
     void getPrioritizedTasks() throws IOException {
