@@ -8,6 +8,7 @@ import history.HistoryManager;
 import java.time.LocalDateTime;
 import java.util.*;
 
+// тестовый комментарий
 public class InMemoryTaskManager implements TaskManager {
     protected int nexId = 1;
     protected final Map<Integer, Task> taskMap = new HashMap<>();
