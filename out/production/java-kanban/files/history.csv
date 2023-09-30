@@ -1,3 +1,4 @@
 ID,TYPE,NAME,STATUS,DESCRIPTION,EPIC_ID,DURATION,START_TIME,END_TIME
 1,TASK,Напоминание 1,NEW,Сдать показания счетчиков,не применимо,0,null,невозможно рассчитать
+2,TASK,Напоминание 2,IN_PROGRESS,Оплатить квитанции КУ,не применимо,0,null,невозможно рассчитать
 
